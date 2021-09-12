@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Styles.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="display: flex; align-items: center; justify-content: center; background-color: lightgray;height: 99vh;">
+        <div
+            style="border: solid; height: 400px; width: 400px; min-width: 100vh; min-height: 70vh; background-color: wheat;">
+            <div style="margin-left: 10%;">
+                <img style="margin-left: 35%; z-index: 20;" height="45%" width="20%" src="ceiling-lamp.png" alt="lamp"/>
+                <div id="bulb" style=" height: 11px; width: 30px; margin-left: 42.5%;margin-top: -22px; 
+                border-radius: 0px 0px 220px 220px; 
+                background-color:yellow; 
+                box-shadow: 0px 0px 15px 11px yellow;
+                /* box-shadow: 15px 15px 15px yellow,-15px 15px 15px yellow; */
+                "
+                ></div>
+                <!-- <img style="margin-left: 35%;z-index: 20;" height="45%" width="20%" src="ceiling-lamp.png" alt="lamp"/> -->
+            </div>
+            <div style="margin-top: 5%; ">
+
+                <div style="display: inline-block; height: 100p; width: 200px; margin-left: 5%;">
+                    <label class="switch" style="margin-left: 27%; transform: rotate(90deg); margin-top: 5px;">
+                        <input type="checkbox" checked value="1" id="switch" onclick="switchHandle()">
+                        <span class="slider round"></span>
+                    </label>
+
+                    <input id="range" type="range" min="25" max="100" value="62"
+                        style="margin-left: 5%; border: solid; display: block; margin-top: 30px;">
+                </div>
+
+                <div id="colorPicker" onchange="colorChange"
+                    style="margin-left: 42%; width: 120px; display: inline-block;">
+                    <input type="color" id="red" name="head" value="#FF0000" style="border-radius: 100px/50px; width: 25px;">
+                    <input type="color" id="green" name="head" value="#00FF00" style="border-radius: 100px/50px; width: 25px; margin-left: 12px; margin-bottom: 7px;">
+                    <input type="color" id="blue" name="head" value="#0000FF" style="border-radius: 100px/50px; width: 25px; margin-left: 12px;">
+                    <input type="color" id="white" name="head" value="#FFFFFF" style="border-radius: 100px/50px; width: 25px;" >
+                    <input type="color" id="yellow" name="head" value="#FFFF00" style="border-radius: 100px/50px; width: 25px; margin-left: 12px; margin-bottom: 7px;">
+                    <input type="color" id="cyan" name="head" value="#00FFFF" style="border-radius: 100px/50px; width: 25px; margin-left: 12px;">
+                    <input type="color" id="magenta" name="head" value="#FF00FF" style="border-radius: 100px/50px; width: 25px;">
+                    <input type="color" id="black" name="head" value="#000000" style="border-radius: 100px/50px; width: 25px; margin-left: 12px;">
+                    <input type="color" id="mix" name="head" value="#00FFAA" style="border-radius: 100px/50px; width: 25px; margin-left: 12px;">
+                </div>
+            </div>
+            <div id="surface" style=" height: 2px; width: 4px; opacity: 0.5; 
+                margin-top: 15%;margin-left: 50%;
+                border-radius: 100px/50px;
+                box-shadow: 20px 0px 50px 40px yellow, -20px 0px 50px 40px yellow, 30px 0px 70px 60px yellow, -30px 0px 70px 60px yellow;
+                " value="#0000FF">
+            </div>
+        </div>
+    </div>
+    <script>
+        const surface = document.getElementById("surface");
+        const bulbEle = document.getElementById("bulb");
+        const element = document.getElementById("range");
+        element.addEventListener("input", change, false);
+        // element.addEventListener("input", changeBulb, false);
+        function change() {
+
+            const opacityValue = (element.value / 100)
+            // console.log(opacityValue)
+            bulbEle.style.opacity = opacityValue;
+            surface.style.opacity = opacityValue
+        }
+
+        const ele = document.getElementById("colorPicker");
+        ele.addEventListener("input", colorChange, false);
+        // element.addEventListener("change", colorChange, false);
+
+        function colorChange(e) {
+            // const element = document.getElementById("colorPicker");
+            console.log(e.target.value)
+            let color = e.target.value;
+            surface.style.backgroundColor = color;
+            console.log(color)
+            // surface.style.boxShadow= `0px 0px 90px 65px ${color},  0px 0px 80px 45px ${color}, 0px 0px 80px 25px ${color}, inset 0px 0px 90px 2px;`
+            surface.style.boxShadow = `20px 0px 50px 40px ${color}, -20px 0px 50px 40px ${color}, 30px 0px 70px 60px ${color}, -30px 0px 70px 60px ${color}`;
+            bulbEle.style.boxShadow = `0px 0px 20px 7px ${color}`;
+            bulbEle.style.backgroundColor = color;
+            // surface.style.boxShadow = "20px 0px 50px 40px";
+        }
+        let a = 1
+        function switchHandle() {
+            const opacityValue = (element.value / 100)
+            if (a) {
+                surface.style.opacity = "0"
+                bulbEle.style.opacity = "0"
+                a = 0;
+            } else {
+                surface.style.opacity = opacityValue
+                bulbEle.style.opacity = opacityValue
+                a = 1;
+            }
+        }
+    </script>
+</body>
+
+</html>
