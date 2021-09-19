@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .parent {
+            display: flex;
+            /* height: 90vh; */
+            width: 150vh;
+            margin-left: 150px;
+            justify-content: space-around;
+        }
+
+        .bottle {
+            width: 100px;
+            height: 150px;
+            border: solid;
+            border-top: none;
+            display: inline-block;
+            /* margin-top: 200px; */
+            /* margin-left: 150px; */
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .liquid1 {
+            width: 100px;
+            height: 49px;
+            border-bottom: solid 1px;
+            background-color: red;
+        }
+
+        .liquid2 {
+            width: 100px;
+            height: 49px;
+            border-bottom: solid 1px;
+            background-color: green;
+        }
+
+        .liquid3 {
+            width: 100px;
+            height: 49px;
+            border-bottom: solid 1px;
+            background-color: yellow;
+        }
+
+        #seconds-counter {
+            flex-direction: row;
+            margin-top: 100px;
+            /* text-align: center; */
+            margin-left: 220px;
+            font-size: 25px;
+            margin-bottom: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='seconds-counter'>Timer:15 seconds.</div>
+    <div id="parent" class="parent">
+        <!-- <div id='seconds-counter'></div> -->
+        <div class="bottle" id="bottle1" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+            <div class='liquid1' id="l1" draggable="true"></div>
+            <div class='liquid1' id="l2" draggable="true"></div>
+            <div class='liquid3' id="l8" draggable="true"></div>
+            <!-- <div class='liquid1' id="l3" draggable="true"></div> -->
+        </div>
+
+        <div class="bottle" id="bottle2" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+            <!-- <div class='liquid2' id="l4" draggable="true"></div> -->
+            <div class='liquid3' id="l7" draggable="true"></div>
+            <div class='liquid2' id="l5" draggable="true"></div>
+            <div class='liquid2' id="l6" draggable="true"></div>
+        </div>
+
+        <div class="bottle" id="bottle3" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+            <!-- <div class='liquid3' id="l7" draggable="true"></div> -->
+            <!-- <div class='liquid3' id="l8" draggable="true"></div> -->
+            <div class='liquid1' id="l3" draggable="true"></div>
+            <div class='liquid2' id="l4" draggable="true"></div>
+            <div class='liquid3' id="l9" draggable="true"></div>
+        </div>
+        <div class="bottle" id="bottle4" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+
+        </div>
+    </div>
+    <script>
+        const element = document.getElementById("parent");
+        let bottle1 = document.getElementById("bottle1");
+        let bottle2 = document.getElementById("bottle2");
+        let bottle3 = document.getElementById("bottle3");
+        let bottle4 = document.getElementById("bottle4");
+
+        element.addEventListener("dragend", countTag)
+
+        function countTag() {
+            let TagsInBottle1 = bottle1.getElementsByTagName('*').length;
+            let TagsInBottle2 = bottle2.getElementsByTagName('*').length;
+            let TagsInBottle3 = bottle3.getElementsByTagName('*').length;
+            let TagsInBottle4 = bottle4.getElementsByTagName('*').length;
+
+            let check = [false, false, false, false];
+            if (TagsInBottle1 === 3) check[0] = checkAnswer(bottle1)
+            if (TagsInBottle2 === 3) check[1] = checkAnswer(bottle2)
+            if (TagsInBottle3 === 3) check[2] = checkAnswer(bottle3)
+            if (TagsInBottle4 === 3) check[3] = checkAnswer(bottle4)
+            let cnt = 0;
+            for (let i = 0; i < check.length; i++) {
+                if (check[i] === true) cnt += 1;
+                if (cnt === 3) {
+                    window.alert("You won, Restart");
+                    location.reload();
+                }
+            }
+        }
+        function checkAnswer(bottleNo) {
+            let TagsInBottle = bottleNo.getElementsByTagName('*');
+
+            let i = 0;
+            let liquid1Color = getComputedStyle(TagsInBottle[i]);
+            let liquid2Color = getComputedStyle(TagsInBottle[i + 1]);
+            let liquid3Color = getComputedStyle(TagsInBottle[i + 2]);
+            if (liquid1Color.backgroundColor === liquid2Color.backgroundColor && liquid2Color.backgroundColor === liquid3Color.backgroundColor) {
+                console.log("success")
+                return true;
+            }
+        }
+        var seconds = 15;
+        var el = document.getElementById('seconds-counter');
+
+        function incrementSeconds() {
+            if (seconds === 0) {
+                clearInterval(clear);
+                window.alert("Game Over, Restart")
+                location.reload();
+                return;
+            }
+
+            seconds -= 1;
+            el.innerText = "Timer:" + seconds + " seconds.";
+        }
+        console.log("sec", seconds)
+
+        let clear = setInterval(incrementSeconds, 1000);
+
+        function myStopFunction() {
+            clearInterval(clear);
+        }
+
+        function dragstart_handler(ev) {
+            console.log("dragestart", ev)
+            ev.dataTransfer.setData("text/plain", ev.target.id);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // const element = document.getElementById("parent");
+            console.log("listener", element)
+            element.addEventListener("dragstart", dragstart_handler);
+        });
+
+        function dragover_handler(ev) {
+            // console.log("dragOver",ev)
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "move";
+        }
+        function drop_handler(ev) {
+            ev.preventDefault();
+            // Get the id of the target and add the moved element to the target's DOM
+            const data = ev.dataTransfer.getData("text/plain");
+            console.log("drop", data)
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+</body>
+
+</html>
