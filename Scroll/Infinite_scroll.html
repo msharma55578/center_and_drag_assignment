@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .Style{
+            height: 300px;
+            width: 300px;
+            border: solid;
+        }
+    </style>
+</head>
+<body>
+    <div id="parent">
+        <div id="A1" class="Style">1</div>
+        <div id="A2" class="Style">2</div>
+        <div id="A3" class="Style">3</div>
+        <div id="A4" class="Style">4</div>
+    </div>
+    <script>
+        let ele =document.getElementsByTagName('body')[0]
+        let ele1 =document.getElementById('A1');
+        let parent =document.getElementById('parent');
+        let divNo = 5;
+        let removeDivNo = 1;
+        const loadMore = () =>{
+            let TagsInParent = parent.getElementsByTagName('*').length;
+            console.log(TagsInParent,"tagsin")
+            if(TagsInParent === 7){
+                let removeDiv = document.getElementById(`A${removeDivNo++}`);
+                removeDiv.parentNode.removeChild(removeDiv);
+            }
+            let divMore = document.createElement('div');
+            divMore.setAttribute("id", `A${divNo}`);
+            divMore.setAttribute("class", `Style`);
+            divMore.innerHTML = divNo++;
+            parent.appendChild(divMore);            
+        }
+
+        window.addEventListener('scroll',(event) => {
+            //window.innerHeight  current-view (window)  ------- 
+            //document.getElementsByTagName('body')[0].offsetHeight   total body length
+            // scrollY --- scroll length
+            //document.documentElement.scrollHeight  -------  total length of document
+            console.log('Scrolling...',scrollY," ",window.innerHeight);
+            console.log('Scrolling',document.documentElement.scrollHeight);
+            if(scrollY+window.innerHeight >= document.documentElement.scrollHeight-50){
+                loadMore();
+            }
+        });
+    </script>
+</body>
+</html>
