@@ -8,12 +8,35 @@
     <style>
         .Style{
             height: 300px;
-            width: 300px;
+            width: 600px;
             border: solid;
+            margin: 5% auto auto auto;
+            top: 50%;
+            left: 50%;
+            background-color: greenyellow;
+            /* transform: translate(-50%, -50%); */
+        }
+        #parent {
+            border: solid;
+            background-color: rgb(33, 189, 103);
+            /* width: 100%; */
+            margin-top:55px;
+        }
+        .heading {
+            border: solid;
+            margin-top: -4%;
+            padding-left:  40%;
+            padding-top: 1%;
+            /* padding-top: 1%; */
+            background-color: chocolate;
+            height: 50px;
+            width: 58.4%;
+            position: fixed;
         }
     </style>
 </head>
 <body>
+    <h2 class="heading">Infinite Virtual Scroll</h2>
     <div id="parent">
         <div id="A1" class="Style">1</div>
         <div id="A2" class="Style">2</div>
@@ -24,20 +47,47 @@
         let ele =document.getElementsByTagName('body')[0]
         let ele1 =document.getElementById('A1');
         let parent =document.getElementById('parent');
+        let TagsInParent = parent.getElementsByTagName('*');
         let divNo = 5;
         let removeDivNo = 1;
+
         const loadMore = () =>{
-            let TagsInParent = parent.getElementsByTagName('*').length;
-            console.log(TagsInParent,"tagsin")
-            if(TagsInParent === 7){
+            
+            console.log(TagsInParent.length,"tagsin")
+            if(TagsInParent.length >= 7){
                 let removeDiv = document.getElementById(`A${removeDivNo++}`);
                 removeDiv.parentNode.removeChild(removeDiv);
             }
+
             let divMore = document.createElement('div');
             divMore.setAttribute("id", `A${divNo}`);
             divMore.setAttribute("class", `Style`);
             divMore.innerHTML = divNo++;
             parent.appendChild(divMore);            
+        }
+
+        const loadMoreUp = () =>{
+            // let TagsInParent = parent.getElementsByTagName('*').length;
+            console.log("before",parent.childNodes);
+
+            if(TagsInParent.length >= 7 && removeDivNo > 1){
+                    let removeDiv = document.getElementById(`A${divNo--}`);
+                    removeDiv.parentNode.removeChild(removeDiv);
+                }
+
+            if(removeDivNo>1){
+                let divMore = document.createElement('div');
+                divMore.setAttribute("id", `A${--removeDivNo}`);
+                divMore.setAttribute("class", `Style`);
+                divMore.innerHTML = removeDivNo;
+                parent.insertBefore(divMore,parent.childNodes[0]);  
+
+                // let removeDiv = document.getElementById(`A${divNo--}`);
+                // removeDiv.parentNode.removeChild(removeDiv);
+                console.log("before",parent.childNodes);
+
+                
+            }
         }
 
         window.addEventListener('scroll',(event) => {
@@ -50,7 +100,10 @@
             if(scrollY+window.innerHeight >= document.documentElement.scrollHeight-50){
                 loadMore();
             }
-        });
+            if(scrollY<100){
+                loadMoreUp();
+            }
+        }); 
     </script>
 </body>
 </html>
