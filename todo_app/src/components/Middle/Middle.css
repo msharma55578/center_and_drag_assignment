@@ -1,0 +1,22 @@
+.container {
+    min-height: 500px;
+    /* width: 50%; */
+    border: solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paper {
+    min-height: 500px;
+    width: 50%;
+    background-color: greenyellow !important;
+    /* display: flex; */
+}
+
+.contentHeading {
+    width: 70%;
+    border: solid;
+    align-items: center;
+    justify-content: center;
+}
