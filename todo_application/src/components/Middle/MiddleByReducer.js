@@ -9,17 +9,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 
 export default function Middle() {
-    // const [data, setData] = useState('');
-    // const [allData, setAllData] = useState([]);
     const [text, setText] = useState('');
 
-    const handleAdd = () =>{
-        let array = [];
-        let a = allData;
-        array.push(text);
-        array.push(...allData);
-        // console.log(array);
-        // setAllData(array)
+    const handleDelete = (state,action) =>{
+        let copyAllData = [...state.allData]
+        copyAllData.splice(action.index,1);
+        return copyAllData
     }
 
     const reducer = (state,action) =>{
@@ -32,7 +27,7 @@ export default function Middle() {
                 }
             case 'DELETE':
                 return {
-                    allData:state.allData.splice(action.index,1)
+                    allData:handleDelete(state,action)
                 };
             default:
                 throw new Error();
@@ -41,21 +36,6 @@ export default function Middle() {
 
     const [{data,allData}, dispatch] = useReducer(reducer,{data:'',allData:[]});
 
-    
-    // const handleDelete = (index) =>{
-    //     let copyAllData = [...allData]
-    //     copyAllData.splice(index,1);
-    //     // allData.splice(index,1);
-    //     setAllData(copyAllData)
-    //     // allData.splice(index,1);
-    //     console.log(allData);
-    // }
-    
-    
-
-    
-    // let Count = state.data;
-    console.log("count",data)
     return (
         <div>
             <div className="container">
@@ -74,6 +54,7 @@ export default function Middle() {
                         </Button>
                         <br/>
                         <div style={{border:'solid',display:'inline-block',width:'44%',textAlign:'initial'}}>
+
                             {allData?.map((data,index)=>(
                                 <div key={index} style={{border:'solid red',display:'inline-block',width:'100%'}}>
                                 {index+1}. {data}
